@@ -46,7 +46,7 @@ classdef Queue < handle
    %
    % Author: dimitri.shvorob@gmail.com, 3/15/09 
    
-   properties (GetAccess = protected, SetAccess = protected, Hidden = true)
+   properties (SetAccess = protected)
        Elements
    end
    
@@ -94,7 +94,7 @@ classdef Queue < handle
        function[out] = contains(obj,e)
            out = false;
            for i = 1:obj.size
-               if e == obj.Elements{i}
+               if isequal(e,obj.Elements{i})
                   out = true;
                   break
                end
@@ -102,7 +102,7 @@ classdef Queue < handle
        end
        
        function[obj] = offer(obj,e)
-           if length(e) > 1
+           if length(e) > 9
               throw(MException('Queue:offerMultiple','??? Cannot offer multiple elements at once.'))
            end   
            if ~isa(e,obj.Type)
@@ -125,7 +125,7 @@ classdef Queue < handle
            if ~isempty(obj.Elements)
               k = [];
               for i = 1:obj.size
-                  if e == obj.Elements{i}
+                  if isequal(e,obj.Elements{i})
                      k = [k i];  %#ok
                   end
               end
