@@ -2,7 +2,7 @@ GoalState = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 RunningTimes = zeros(1, 100);
 ClockTimes = zeros(1, 100);
 IStates = cell(100, 1);
-actionStepMax = 100;
+actionStepMax = 13;
 for k = 1:100
     IStates{k} = GoalState;
     for n = 1:randi(actionStepMax)
@@ -54,7 +54,7 @@ for j = 1:100
                 child = struct('state', childState, 'pathcost', node.pathcost + 1);
                 if(~explored.contains(child.state) && ~frontier.contains(child))
                    if(isequal(child.state, GoalState)) 
-                      RunningTimes(j) = node.pathcost;
+                      RunningTimes(j) = child.pathcost;
                       ClockTimes(j) = toc;
                       solutionFound = 1;
                    end
@@ -66,3 +66,6 @@ for j = 1:100
     frontier.clear();
     explored.clear();
 end
+histogram(RunningTimes);
+mean = mean(RunningTimes)
+variance = var(RunningTimes)
