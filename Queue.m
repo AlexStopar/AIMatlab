@@ -46,11 +46,11 @@ classdef Queue < handle
    %
    % Author: dimitri.shvorob@gmail.com, 3/15/09 
    
-   properties (SetAccess = protected)
+   properties (SetAccess = public)
        Elements
    end
    
-   properties (SetAccess = protected)
+   properties (SetAccess = public)
        Type
    end
          
