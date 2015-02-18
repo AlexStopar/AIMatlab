@@ -1,11 +1,11 @@
 function [ result ] = RecursiveDFS( node, limit, GoalState)
     %RECURSIVEDFS Summary of this function goes here
     %   Detailed explanation goes here
-    result = -1;
+    result = struct('state', GoalState, 'pathcost', -1, 'parent', GoalState);
     if(isequal(node.state, GoalState))
-       result = node.pathcost; 
+       result = node;
     elseif(limit == 0)
-       result = -1;
+       result.pathCost = -1;
     else
        for a = 1:4
             blank = find(node.state == 0);
@@ -24,14 +24,13 @@ function [ result ] = RecursiveDFS( node, limit, GoalState)
             end
             
             if(isViableAction == 1)
-                child = struct('state', childState, 'pathcost', node.pathcost + 1);
+                child = struct('state', childState, 'pathcost', node.pathcost + 1, 'parent', node);
                 result = RecursiveDFS(child, limit - 1, GoalState);
             end
-            if (result > -1)
+            if (result.pathcost > -1)
                 break;
             end
        end
     end
-    potato = 1;
 end
 

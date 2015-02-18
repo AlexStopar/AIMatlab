@@ -2,7 +2,7 @@ GoalState = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 RunningTimes = zeros(1, 100);
 ClockTimes = zeros(1, 100);
 IStates = cell(100, 1);
-actionStepMax = 13;
+actionStepMax = 20;
 for k = 1:100
     IStates{k} = GoalState;
     for n = 1:randi(actionStepMax)
@@ -68,5 +68,10 @@ for j = 1:100
     explored.clear();
 end
 histogram(RunningTimes);
+%Clear workspace before running each time
+figure();
+scatter(RunningTimes, ClockTimes);
+xlabel('RunningTimes');
+ylabel('ClockTimes');
 mean = mean(RunningTimes)
 variance = var(RunningTimes)
