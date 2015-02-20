@@ -4,6 +4,7 @@ ClockTimes = zeros(1, 100);
 IStates = cell(100, 1);
 actionStepMax = 20;
 
+ISolutions = cell(100, actionStepMax);
 
 for k = 1:100
     IStates{k} = GoalState;
@@ -24,21 +25,18 @@ end
 
 for j = 1:100
     tic;
-    node = struct('state', IStates{j}, 'pathcost', 0);
+    node = struct('state', IStates{j}, 'pathcost', 0, 'parent', 0);
     if(isequal(node.state, GoalState)) 
         RunningTimes(j) = node.pathcost;
     end
-    explored = Queue('struct');
-    explored.offer(node);
     %dfs subroutine
     runTime = 0;
     clockTime = 0;
-    [runTime, clockTime] = dfs_subroutine(node, explored, actionStepMax, GoalState);
+    [runTime, clockTime, ISolutions{j}] = dfs_subroutine(node, actionStepMax, GoalState);
     RunningTimes(j) = runTime;
     ClockTimes(j) = clockTime;
-    explored.clear();
 end
-histogram(RunningTimes);
+%histogram(RunningTimes);
 %Clear workspace before running each time
 figure();
 scatter(RunningTimes, ClockTimes);

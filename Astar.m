@@ -3,6 +3,8 @@ RunningTimes = zeros(1, 100);
 ClockTimes = zeros(1, 100);
 IStates = cell(100, 1);
 actionStepMax = 20;
+
+ISolutions = cell(100, actionStepMax);
 for k = 1:100
     IStates{k} = GoalState;
     for n = 1:randi(actionStepMax)
@@ -24,7 +26,7 @@ for j = 1:100
     solutionFound = 0;
     tic;
     distance = ManhattenDistance(IStates{j});
-    node = struct('state', IStates{j}, 'pathcost', 0, 'manhattenDistance', distance);
+    node = struct('state', IStates{j}, 'pathcost', 0, 'manhattenDistance', distance, 'parent', 0);
     if(isequal(node.state, GoalState)) 
         RunningTimes(j) = node.pathcost;
         solutionFound = 1;
@@ -52,12 +54,20 @@ for j = 1:100
             end
             if(isViableAction == 1)
                    distance = ManhattenDistance(childState);
-                child = struct('state', childState, 'pathcost', node.pathcost + 1, 'manhattenDistance', distance);
+                child = struct('state', childState, 'pathcost', node.pathcost + 1, 'manhattenDistance', distance,'parent', node);
                 if(~explored.contains(child.state))
                    if(isequal(child.state, GoalState)) 
                       RunningTimes(j) = child.pathcost;
                       ClockTimes(j) = toc;
                       solutionFound = 1;
+                                            traceNode = child;
+                      solutionTrace = 1;
+                      ISolutions{j}{solutionTrace} = traceNode.state;
+                      while(~isequal(traceNode.state,IStates{j}))
+                          solutionTrace = solutionTrace + 1;
+                          traceNode = traceNode.parent;
+                          ISolutions{j}{solutionTrace} = traceNode.state;
+                      end
                    end
                    frontier.insert(child.pathcost + child.manhattenDistance, child);
                    explored.offer(childState);
@@ -67,11 +77,11 @@ for j = 1:100
     end
     explored.clear();
 end
-histogram(RunningTimes);
+%histogram(RunningTimes);
 %Clear workspace before running each time
 figure();
 scatter(RunningTimes, ClockTimes);
 xlabel('RunningTimes');
 ylabel('ClockTimes');
-mean = mean(RunningTimes)
+ave = mean(RunningTimes)
 variance = var(RunningTimes)

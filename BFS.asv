@@ -82,5 +82,5 @@ figure();
 scatter(RunningTimes, ClockTimes);
 xlabel('RunningTimes');
 ylabel('ClockTimes');
-ave = mean(RunningTimes)
+ave = ave(RunningTimes)
 variance = var(RunningTimes)
