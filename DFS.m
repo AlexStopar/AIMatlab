@@ -36,7 +36,7 @@ for j = 1:100
     RunningTimes(j) = runTime;
     ClockTimes(j) = clockTime;
 end
-%histogram(RunningTimes);
+histogram(RunningTimes);
 %Clear workspace before running each time
 figure();
 scatter(RunningTimes, ClockTimes);
